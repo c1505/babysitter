@@ -22,7 +22,7 @@ end
 
 class BabysitterCLI
   def get_input
-    gets.chomp
+    $stdin.gets.chomp
   end
   
   def run
