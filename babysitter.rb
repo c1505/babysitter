@@ -1,12 +1,20 @@
+require 'time'
 class TimeClock
   attr_reader :start_time
-  attr_accessor :stop_time
+  attr_reader :stop_time
   
   def initialize(start_time, cli=BabysitterCLI.new)
     @cli = cli
     @start_time = start_time
-    unless valid_start_time?
+    if before_valid_start_time?
       get_start_time
+    end
+  end
+  
+  def stop_time=(stop_time)
+    @stop_time = stop_time
+    if after_valid_stop_time?
+      get_stop_time
     end
   end
   
@@ -15,8 +23,17 @@ class TimeClock
     @start_time = @cli.get_input
   end
   
-  def valid_start_time?
-    Time.new(start_time) >= Time.new("5:00PM")
+  def get_stop_time
+    print "Your end time cannot be after to 4:00AM.  Please enter a different time"
+    @start_time = @cli.get_input
+  end
+  
+  def before_valid_start_time?
+    Time.parse(start_time) < Time.parse("5:00PM")
+  end
+  
+  def after_valid_stop_time?
+    Time.parse(stop_time) > Time.parse("4:00AM")
   end
 end
 
