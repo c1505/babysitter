@@ -1,2 +1,3 @@
 require_relative 'babysitter.rb'
-BabysitterCLI.run
+baby_sitter_CLI = BabysitterCLI.new
+baby_sitter_CLI.run
