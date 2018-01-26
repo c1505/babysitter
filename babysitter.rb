@@ -6,7 +6,8 @@ class TimeClock
   def initialize(start_time, cli=BabysitterCLI.new)
     @cli = cli
     @start_time = start_time
-    if before_valid_start_time?
+    @start_counter = 1
+    if before_valid_start_time? && @start_counter <=2
       get_start_time
     end
   end
@@ -21,6 +22,12 @@ class TimeClock
   def get_start_time
     print "Your start time cannot be prior to 5:00PM.  Please enter a different time"
     @start_time = @cli.get_input
+    if before_valid_start_time? && @start_counter <=2
+      @start_counter += 1
+      get_start_time
+    elsif before_valid_start_time?
+      puts "Your start time cannot be prior to 5:00PM. Exiting the program"
+    end
   end
   
   def get_stop_time

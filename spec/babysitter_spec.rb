@@ -10,10 +10,14 @@ RSpec.describe TimeClock do
     end
     
     it "does not start earlier than 5:00PM" do
-      allow($stdin).to receive(:gets).and_return("")
+      allow($stdin).to receive(:gets).and_return("5:00PM")
       expect { TimeClock.new("4:59PM") }.to output("Your start time cannot be prior to 5:00PM.  Please enter a different time").to_stdout
     end
     
+    it "exits program if there is a repeated start time that is too early" do
+      allow($stdin).to receive(:gets).and_return("4:59PM", "4:59PM")
+      expect { TimeClock.new("4:59PM") }.to output(/Your start time cannot be prior to 5:00PM. Exiting the program/).to_stdout
+    end
   end
   
   describe "#stop_time" do 
