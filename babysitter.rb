@@ -99,5 +99,6 @@ class BabysitterCLI
     time_clock.stop_time = get_input
     print "Please enter the bedtime"
     time_clock.bedtime = get_input
+    puts "Your total pay is $#{time_clock.total_pay}"
   end
 end
