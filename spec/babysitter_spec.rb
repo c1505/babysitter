@@ -40,4 +40,13 @@ RSpec.describe TimeClock do
       expect { time_clock.stop_time = "4:01AM" }.to output(/Your end time cannot be after 4:00AM. Exiting the program/).to_stdout
     end
   end
+  
+  describe "#total_pay" do
+    it "paid $12/hour from start-time to bedtime" do
+      time_clock = TimeClock.new("5:00PM")
+      time_clock.stop_time = "6:00PM"
+      time_clock.bedtime = "6:00PM"
+      expect(time_clock.total_pay).to eq(12)
+    end
+  end
 end

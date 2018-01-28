@@ -3,6 +3,7 @@ require 'pry'
 class TimeClock
   attr_reader :start_time
   attr_reader :stop_time
+  attr_writer :bedtime
   
   def initialize(start_time, cli=BabysitterCLI.new)
     @cli = cli
@@ -43,6 +44,11 @@ class TimeClock
     end
   end
   
+  def total_pay
+    hours_worked = Time.parse(stop_time).hour - Time.parse(start_time).hour
+    hours_worked * 12
+  end
+  
   private
   
   def before_valid_start_time?
@@ -56,6 +62,16 @@ class TimeClock
       Time.parse(stop_time) < Time.parse(start_time)
     end
   end
+  
+  def before_bed
+  end
+  
+  def after_bed_before_midnight
+  end
+  
+  def after_midnight
+  end
+  
 end
 
 class BabysitterCLI
@@ -68,5 +84,7 @@ class BabysitterCLI
     time_clock = TimeClock.new(get_input, self)
     print "Please enter your stop time"
     time_clock.stop_time = get_input
+    print "Please enter the bedtime"
+    time_clock.bedtime = get_input
   end
 end
