@@ -30,8 +30,14 @@ RSpec.describe TimeClock do
     
     it "ends no later than 4:00AM" do
       time_clock = TimeClock.new("5:00PM")
-      allow($stdin).to receive(:gets).and_return("")
-      expect { time_clock.stop_time = "4:01AM" }.to output("Your end time cannot be after to 4:00AM.  Please enter a different time").to_stdout
+      allow($stdin).to receive(:gets).and_return("3:00AM")
+      expect { time_clock.stop_time = "4:01AM" }.to output("Your end time cannot be after 4:00AM.  Please enter a different time\n").to_stdout
+    end
+    
+    it "exits program if there is a repeated stop time that is too late" do
+      time_clock = TimeClock.new("5:00PM")
+      allow($stdin).to receive(:gets).and_return("4:01AM", "4:01AM")
+      expect { time_clock.stop_time = "4:01AM" }.to output(/Your end time cannot be after 4:00AM. Exiting the program/).to_stdout
     end
   end
 end

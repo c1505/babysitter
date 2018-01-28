@@ -1,4 +1,5 @@
 require 'time'
+require 'pry'
 class TimeClock
   attr_reader :start_time
   attr_reader :stop_time
@@ -13,6 +14,7 @@ class TimeClock
   end
   
   def stop_time=(stop_time)
+    @stop_counter ||= 1
     @stop_time = stop_time
     if after_valid_stop_time?
       get_stop_time
@@ -31,16 +33,28 @@ class TimeClock
   end
   
   def get_stop_time
-    print "Your end time cannot be after to 4:00AM.  Please enter a different time"
-    @start_time = @cli.get_input
+    puts "Your end time cannot be after 4:00AM.  Please enter a different time"
+    @stop_time = @cli.get_input
+    if after_valid_stop_time? && @stop_counter <=2
+      @stop_counter += 1
+      get_stop_time
+    elsif after_valid_stop_time?
+      puts "Your end time cannot be after 4:00AM. Exiting the program"
+    end
   end
+  
+  private
   
   def before_valid_start_time?
     Time.parse(start_time) < Time.parse("5:00PM")
   end
   
   def after_valid_stop_time?
-    Time.parse(stop_time) > Time.parse("4:00AM")
+    if Time.parse(stop_time).hour <= 4
+      Time.parse(stop_time) > Time.parse("4:00AM")
+    elsif Time.parse(stop_time).hour > 4
+      Time.parse(stop_time) < Time.parse(start_time)
+    end
   end
 end
 
