@@ -55,5 +55,13 @@ RSpec.describe TimeClock do
       time_clock.bedtime = "11:00PM"
       expect(time_clock.total_pay).to eq(20)
     end
+    
+    it "paid $16/hour from midnight to end of job" do
+      time_clock = TimeClock.new("10:00PM")
+      time_clock.stop_time = "1:00AM"
+      time_clock.bedtime = "11:00PM"
+      expect(time_clock.total_pay).to eq(36)
+    end
+    
   end
 end

@@ -45,7 +45,7 @@ class TimeClock
   end
   
   def total_pay
-    pay_before_bed + pay_after_bed_before_midnight
+    pay_before_bed + pay_after_bed_before_midnight + pay_after_midnight
   end
   
   private
@@ -77,7 +77,12 @@ class TimeClock
     hours_worked * 8
   end
   
-  def after_midnight
+  def pay_after_midnight
+    if Time.parse(stop_time).hour <= 4
+      Time.parse(stop_time).hour * 16
+    else
+      0
+    end
   end
   
 end
