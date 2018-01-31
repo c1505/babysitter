@@ -63,5 +63,51 @@ RSpec.describe TimeClock do
       expect(time_clock.total_pay).to eq(36)
     end
     
+    describe "paid for full hours(no fractional hours).  Rounds fractional hours " do
+      it "rounds 30 minutes up to one hour from start-time to bedtime" do
+        time_clock = TimeClock.new("5:00PM")
+        time_clock.stop_time = "6:30PM"
+        time_clock.bedtime = "6:30PM"
+        expect(time_clock.total_pay).to eq(24)
+      end
+    
+      it "rounds 29 minutes down to zero hours from start-time to bedtime" do
+        time_clock = TimeClock.new("5:00PM")
+        time_clock.stop_time = "6:29PM"
+        time_clock.bedtime = "6:29PM"
+        expect(time_clock.total_pay).to eq(12)
+      end
+      
+      it "rounds 30 minutes up to one hour from bedtime to midnight" do
+        time_clock = TimeClock.new("10:00PM")
+        time_clock.stop_time = "11:30PM"
+        time_clock.bedtime = "10:00PM"
+        expect(time_clock.total_pay).to eq(16)
+      end
+    
+      it "rounds 29 minutes down to zero from bedtime to midnight" do
+        time_clock = TimeClock.new("10:00PM")
+        time_clock.stop_time = "11:29PM"
+        time_clock.bedtime = "10:00PM"
+        expect(time_clock.total_pay).to eq(8)
+      end
+      
+            
+      it "rounds 30 minutes up to one hour from midnight to end of job" do
+        time_clock = TimeClock.new("10:00PM")
+        time_clock.stop_time = "12:30AM"
+        time_clock.bedtime = "11:00PM"
+        expect(time_clock.total_pay).to eq(36)
+      end
+    
+      it "rounds 29 minutes down to zero from midnight to end of job" do
+        time_clock = TimeClock.new("10:00PM")
+        time_clock.stop_time = "12:29AM"
+        time_clock.bedtime = "11:00PM"
+        expect(time_clock.total_pay).to eq(20)
+      end
+      
+    end
+
   end
 end

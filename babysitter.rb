@@ -63,26 +63,32 @@ class TimeClock
   end
   
   def pay_before_bed
-    hours_worked = Time.parse(bedtime).hour - Time.parse(start_time).hour
-    hours_worked * 12
+    hours_worked = ( Time.parse(bedtime) - Time.parse(start_time) ) / 60 / 60
+    hours_worked.round * 12
   end
   
   def pay_after_bed_before_midnight
     if Time.parse(stop_time).hour <= 4
-      hour = 24
+      time = Time.parse("12:00AM") + day_in_seconds
     else
-      hour = Time.parse(stop_time).hour
+      time = Time.parse(stop_time)
     end
-    hours_worked = hour - Time.parse(bedtime).hour
-    hours_worked * 8
+    hours_worked = ( time - Time.parse(bedtime) ) / 60 / 60
+    hours_worked.round * 8
   end
   
   def pay_after_midnight
     if Time.parse(stop_time).hour <= 4
-      Time.parse(stop_time).hour * 16
+      midnight = Time.parse("12:00AM")
+      hours_worked = ( Time.parse(stop_time) - midnight ) / 60 / 60
+      hours_worked.round * 16
     else
       0
     end
+  end
+  
+  def day_in_seconds
+    24 * 60 * 60
   end
   
 end
