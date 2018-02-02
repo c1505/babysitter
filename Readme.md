@@ -1,5 +1,5 @@
 ## Setup
-```$ gem install bundler```
+```$ gem install bundler```<br>
 ```$ bundle install```
 ## Running the Tests
 ```$ rspec```
