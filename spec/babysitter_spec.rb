@@ -1,5 +1,4 @@
 require_relative '../babysitter.rb'
-require 'pry'
 RSpec.describe TimeClock do
 
   describe "#start_time" do

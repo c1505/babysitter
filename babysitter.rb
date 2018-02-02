@@ -1,5 +1,4 @@
 require "time"
-require "pry"
 class TimeClock
   attr_reader :start_time
   attr_reader :stop_time
