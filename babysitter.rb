@@ -4,11 +4,12 @@ class TimeClock
   attr_reader :start_time
   attr_reader :stop_time
   attr_accessor :bedtime
-
+  VALID_TIME_REGEX = /\A(\d{1}|\d{2}):\d{2}(PM|AM)\z/
   def initialize(start_time, cli = BabysitterCLI.new)
     @cli = cli
     @start_time = start_time
     @start_counter = 1
+    get_valid_time unless valid_time?(@start_time)
     get_start_time if before_valid_start_time? && @start_counter <= 2
   end
 
@@ -26,6 +27,17 @@ class TimeClock
       get_start_time
     elsif before_valid_start_time?
       puts "Your start time cannot be prior to 5:00PM. Exiting the program"
+    end
+  end
+
+  def get_valid_time
+    print "Please enter your time in the format HH:MM:AM/PM ex 5:00PM"
+    @start_time = @cli.get_input
+    if !valid_time?(@start_time) && @start_counter <= 2
+      @start_counter += 1
+      get_valid_time
+    elsif !valid_time?(@start_time)
+      puts "Your time is invalid.  Exiting the program"
     end
   end
 
@@ -86,6 +98,11 @@ class TimeClock
   def day_in_seconds
     24 * 60 * 60
   end
+
+  def valid_time?(time)
+    VALID_TIME_REGEX === time
+  end
+
 end
 
 class BabysitterCLI
