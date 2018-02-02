@@ -7,7 +7,7 @@
 ```$ ruby run.rb```
 
 ## Dependencies
-Ruby >= 2.4.1
+Ruby >= 2.4.1<br>
 rspec >= 3.5
 ## Program Description
 Ruby program with a command line interface that implements the feature
